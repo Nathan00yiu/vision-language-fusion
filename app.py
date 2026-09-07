@@ -30,7 +30,8 @@ demo = gr.Interface(
     description="Zero-shot classification & feature evaluation using OpenCLIP."
 )
 
+
 if __name__ == "__main__":
-    # Render assigns dynamic port numbers via $PORT environment variable
-    port = int(os.environ.get("PORT", 7860))
+    # Fetch PORT set by Render environment, default to 10000 if running locally
+    port = int(os.environ.get("PORT", 10000))
     demo.launch(server_name="0.0.0.0", server_port=port)

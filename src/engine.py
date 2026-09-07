@@ -5,10 +5,11 @@ from PIL import Image
 # Enable MPS acceleration on Apple Silicon (M1/M2/M3/M4)
 device = "mps" if torch.backends.mps.is_available() else "cpu"
 
+# Use lightweight model parameters to fit under 512MB RAM
 class VisionLanguageEngine:
-    def __init__(self, model_name="ViT-B-32", pretrained="laion2b_s34b_b79k"):
+    def __init__(self, model_name="ViT-B-32-quickgelu", pretrained="openai"):
         self.model, _, self.preprocess = open_clip.create_model_and_transforms(
-            model_name, pretrained=pretrained, device=device
+            model_name, pretrained=pretrained, device="cpu"
         )
         self.model.eval()
         self.tokenizer = open_clip.get_tokenizer(model_name)

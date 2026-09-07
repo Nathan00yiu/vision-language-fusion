@@ -5,7 +5,13 @@ WORKDIR /app
 ENV DEBIAN_FRONTEND=noninteractive
 ENV PYTHONUNBUFFERED=1
 
-# Install system dependencies required by vision libraries
+# Memory management flags for PyTorch on low-resource environments
+ENV OMP_NUM_THREADS=1
+ENV MKL_NUM_THREADS=1
+ENV OPENBLAS_NUM_THREADS=1
+ENV VECLIB_MAXIMUM_THREADS=1
+ENV NUMEXPR_NUM_THREADS=1
+
 RUN apt-get update && apt-get install -y \
     git \
     ffmpeg \
@@ -18,8 +24,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
-# Render exposes $PORT dynamically; default fallback to 7860 for local testing
-ENV PORT=7860
+# Expose dynamic port provided by Render
+ENV PORT=10000
 EXPOSE $PORT
 
 CMD ["python", "app.py"]
